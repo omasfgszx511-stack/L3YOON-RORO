@@ -10,7 +10,7 @@ intents.voice_states = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 
 # حط آي دي الروم الصوتي هنا بين الأقواس
-VOICE_CHANNEL_ID = 1425432496551759872  
+VOICE_CHANNEL_ID = 1318525368688447518  
 
 @bot.event
 async def on_ready():
