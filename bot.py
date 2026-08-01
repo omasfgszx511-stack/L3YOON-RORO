@@ -6,27 +6,29 @@ from discord.ext import commands
 intents = discord.Intents.default()
 intents.guilds = True
 intents.voice_states = True
+intents.message_content = True  # مهم لقراءة الأوامر في الشات
 
 bot = commands.Bot(command_prefix="!", intents=intents)
 
-# حط آي دي الروم الصوتي هنا بين الأقواس
-VOICE_CHANNEL_ID = 1318525368688447518  
+# آي دي الروم الصوتي الاحتياطي (لو تبيه يدخل تلقائي أول ما يشتغل)
+VOICE_CHANNEL_ID = 1425432496551759872  
 
 @bot.event
 async def on_ready():
     print(f"تم تسجيل الدخول بنجاح باسم: {bot.user}")
-    
-    # الاتصال بالروم أول ما يشتغل البوت
-    channel = bot.get_channel(VOICE_CHANNEL_ID)
-    if channel and isinstance(channel, discord.VoiceChannel):
-        try:
-            if not channel.guild.voice_client:
-                await channel.connect(self_deaf=True)
-                print(f"تم الانضمام بنجاح إلى الروم: {channel.name}")
-        except Exception as e:
-            print(f"حدث خطأ أثناء محاولة الاتصال: {e}")
+
+# أمر join لدخول الروم الصوتي الموجود فيه الشخص
+@bot.command(name="join")
+async def join_channel(ctx):
+    if ctx.author.voice and ctx.author.voice.channel:
+        channel = ctx.author.voice.channel
+        if ctx.guild.voice_client:
+            await ctx.guild.voice_client.move_to(channel)
+        else:
+            await channel.connect(self_deaf=True)
+        await ctx.send(f"تم الانضمام إلى الروم الصوتي: **{channel.name}** ✅")
     else:
-        print("لم يتم العثور على الروم، تأكد من الآي دي (ID).")
+        await ctx.send("عليك الدخول إلى روم صوتي أولاً لكي أتمكن من الانضمام إليك! ❌")
 
 @bot.event
 async def on_voice_state_update(member, before, after):
