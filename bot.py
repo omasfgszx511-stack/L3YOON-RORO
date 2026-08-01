@@ -7,14 +7,13 @@ intents.voice_states = True
 
 bot = discord.Client(intents=intents)
 
-# حط هنا آي دي الروم الصوتي الصحيح اللي تبيه يدخله
+# آي دي الروم الصوتي الصحيح
 VOICE_CHANNEL_ID = 1425432496551759872  
 
 @bot.event
 async def on_ready():
     print(f"تم تسجيل الدخول بنجاح باسم: {bot.user}")
     
-    # محاولة دخول الروم الصوتي تلقائياً فور تشغيل البوت
     channel = bot.get_channel(VOICE_CHANNEL_ID)
     if channel and isinstance(channel, discord.VoiceChannel):
         try:
